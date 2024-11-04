@@ -7,14 +7,15 @@ def pdf_to_text(pdf_path):
     with fitz.open(pdf_path) as pdf:
         for page in pdf:
             text += page.get_text()
+    print(text)        
     return text
-
+#===============================================================================================
 def text_to_xml(text):
     root = ET.Element("Document")
     content = ET.SubElement(root, "Content")
     content.text = text
     return ET.tostring(root, encoding='utf-8', xml_declaration=True)
-
+#===============================================================================================
 def structure_text_to_tiss(text):
     namespaces = {
         "": "http://www.ans.gov.br/padroes/tiss/schemas",
@@ -78,7 +79,7 @@ def structure_text_to_tiss(text):
     ET.SubElement(epilogo, "ans:hash").text = "69a376127eb4e7e5f11f4e1a8bca391e"
 
     return ET.tostring(root, encoding="ISO-8859-1", xml_declaration=True)
-
+#=====================================================================
 if __name__ == "__main__":
     pdf_path = "models/pdfTest.pdf"  # Substitua pelo caminho do seu PDF
     extracted_text = pdf_to_text(pdf_path)
@@ -87,4 +88,6 @@ if __name__ == "__main__":
     with open("output_tiss.xml", "wb") as xml_file:
         xml_file.write(xml_data)
 
-    print("Conversão concluída! O arquivo XML TISS foi salvo como output_tiss.xml.")
+    print("\nConversão concluída! O arquivo XML TISS foi salvo como output_tiss.xml.")
+    print("\n")
+   
