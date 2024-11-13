@@ -1,72 +1,51 @@
-Aqui está um README para o código:
+# Projeto de Extração e Conversão de PDF para XML no Padrão TISS
 
----
+## Visão Geral
+Este projeto realiza a extração de informações específicas de um arquivo PDF, utilizando coordenadas para localizar e identificar blocos de conteúdo. Os dados extraídos são organizados e convertidos para o padrão de XML TISS, de acordo com os requisitos estabelecidos pela ANS (Agência Nacional de Saúde Suplementar).
 
-# PDF to XML Structure Converter for ANS Format
+## Funcionalidades
 
-This project is a Python-based utility for converting PDF documents into an XML structure conforming to the ANS (Agência Nacional de Saúde Suplementar) layout, used primarily for healthcare billing and claims in Brazil. The current implementation extracts text from a PDF and generates an XML file containing the tag structure of the ANS schema, allowing users to populate data in the desired format later.
+- **Extração Baseada em Coordenadas**: A partir das coordenadas fornecidas (X, Y), o script localiza blocos específicos no PDF e extrai o texto associado.
+- **Identificação de Blocos de Conteúdo**: Utiliza espaçamento vertical e horizontal para determinar separadores de seções dentro do PDF, permitindo a localização de cabeçalhos e seções importantes.
+- **Conversão para XML no Padrão TISS**: Os dados extraídos são estruturados no formato XML conforme o padrão TISS, incluindo cabeçalho e dados específicos de operadoras de saúde.
 
-## Features
+## Estrutura do Projeto
 
-- **PDF Text Extraction**: Extracts all text content from a PDF file.
-- **ANS XML Structure Generation**: Creates an XML structure based on the ANS schema tags, without pre-populating content.
-- **Easy-to-Extend**: Flexible structure enables future enhancements to fill XML fields dynamically with extracted PDF data.
+```plaintext
+.
+├── converter.py          # Script principal que realiza a extração e conversão de dados
+├── README.md             # Documentação do projeto
+├── models/PDF_TISS.pdf   # PDF de exemplo para extração e conversão
+└── output_tiss.xml       # Saída XML gerada no padrão TISS
 
-## Requirements
+##Pré-Requisitos
+Python 3.7+
+Bibliotecas Necessárias:
+PyMuPDF (fitz): Para manipulação e extração de texto do PDF.
+xml.etree.ElementTree: Para criação e manipulação do XML.
+Instale as dependências com:
 
-- **Python 3.7+**
-- **PyMuPDF** (for PDF handling)
-- **xml.etree.ElementTree** (standard Python library for XML manipulation)
 
-To install the required dependencies, use:
-```bash
+##Dependencias
 pip install pymupdf
-```
+##Uso
+Extração de Dados Específicos:
 
-## Usage
+A função find_text_by_coordinates é usada para localizar texto próximo de coordenadas específicas (X, Y) no PDF.
+Ajuste os valores de target_x, target_y, e tolerance para localizar diferentes seções.
+Construção do XML TISS:
 
-1. **Place your PDF** in the `models/` directory or specify a path to the PDF file.
+Com os dados extraídos, a função structure_text_to_tiss organiza as informações e gera o arquivo XML no padrão TISS.
+Exemplo de Uso
+python
+Copiar código
+python converter.py
+Este comando:
 
-2. **Run the script** to generate the XML structure:
-   ```bash
-   python script.py
-   ```
-
-3. **Output XML File**:
-   The generated XML file, `output_structure.xml`, will contain the structured tags without data.
-
-## Code Overview
-
-- **`pdf_to_text(pdf_path)`**: Opens a PDF and extracts all text content.
-- **`text_to_xml_structure()`**: Creates an XML document with the ANS tag hierarchy, ready to be populated with data.
-- **Main Script**: Runs the functions and saves the XML structure to `output_structure.xml`.
-
-## Example Output
-
-Below is a sample of the generated XML structure:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<ans:mensagemTISS xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#">
-  <ans:cabecalho>
-    <ans:identificacaoTransacao>
-      <ans:tipoTransacao />
-      <!-- More tags as per ANS schema -->
-    </ans:identificacaoTransacao>
-    <!-- Additional sections for structured ANS document -->
-  </ans:cabecalho>
-</ans:mensagemTISS>
-```
-
-## Future Work
-
-- **Data Mapping**: Implement data mapping from extracted text to specific XML tags.
-- **Enhanced XML Validation**: Integrate XML schema validation to ensure compliance with ANS standards.
-
-## License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
----
-
-This README provides a summary, installation instructions, and usage guidance, making it easy to understand the project's scope and setup on GitHub.
+Extrai texto específico do PDF baseado em coordenadas.
+Constrói o arquivo XML output_tiss.xml no formato padrão TISS.
+Estrutura do Código
+find_text_by_coordinates: Localiza texto com base em coordenadas específicas, retornando o texto encontrado próximo ao ponto (X, Y).
+structure_text_to_tiss: Organiza o conteúdo extraído no formato XML TISS, incluindo tags de cabeçalho, operadora e prestador de saúde.
+Contribuição
+Sinta-se à vontade para contribuir com sugestões de melhorias, novos recursos ou otimizações de desempenho. Para maiores informações, entre em contato com o mantenedor do projeto.

@@ -40,8 +40,8 @@ def structure_text_to_tiss(registro_ans, cnpj, nome_operadora):
     transacao = ET.SubElement(cabecalho, "ans:identificacaoTransacao")
     ET.SubElement(transacao, "ans:tipoTransacao").text = "DEMONSTRATIVO_ANALISE_CONTA"
     ET.SubElement(transacao, "ans:sequencialTransacao").text = "01984750812"  # Exemplo
-    ET.SubElement(transacao, "ans:dataRegistroTransacao").text = datetime.datetime.now().strftime("%Y-%m-%d")
-    ET.SubElement(transacao, "ans:horaRegistroTransacao").text = datetime.datetime.now().strftime("%H:%M:%S")
+    ET.SubElement(transacao, "ans:dataRegistroTransacao").text = datetime.datetime.now().strftime("%Y-%m-%d") #retirar
+    ET.SubElement(transacao, "ans:horaRegistroTransacao").text = datetime.datetime.now().strftime("%H:%M:%S") #retirar
     
     origem = ET.SubElement(cabecalho, "ans:origem")
     ET.SubElement(origem, "ans:registroANS").text = registro_ans
@@ -64,15 +64,17 @@ def structure_text_to_tiss(registro_ans, cnpj, nome_operadora):
     # Epílogo
     ET.SubElement(ET.SubElement(root, "ans:epilogo"), "ans:hash")
     
-    return ET.tostring(root, encoding="ISO-8859-1", xml_declaration=True) #=====================================================================
+    return ET.tostring(root, encoding="ISO-8859-1", xml_declaration=True) 
+    
+    #=====================================================================
 
 if __name__ == "__main__":
     pdf_path = "models/PDF_TISS.pdf"  # Caminho do PDF
     
     # Extraindo algumas informações específicas a partir das coordenadas
-    registro_ans = find_text_by_coordinates(pdf_path, target_x=100, target_y=50, tolerance=10)  # Coordenadas de exemplo
-    cnpj = find_text_by_coordinates(pdf_path, target_x=150, target_y=60, tolerance=10)          # Coordenadas de exemplo
-    nome_operadora = find_text_by_coordinates(pdf_path, target_x=200, target_y=70, tolerance=10) # Coordenadas de exemplo
+    registro_ans = find_text_by_coordinates  (pdf_path, target_x=200, target_y=100, tolerance=10) # Prestador
+    cnpj = find_text_by_coordinates          (pdf_path, target_x=200, target_y=100, tolerance=10) # Coordenadas de exemplo
+    nome_operadora = find_text_by_coordinates(pdf_path, target_x=200, target_y=100, tolerance=10) # Coordenadas de exemplo
     
     # Construindo o XML com os dados extraídos
     xml_data = structure_text_to_tiss(registro_ans, cnpj, nome_operadora)
