@@ -1,8 +1,7 @@
 import fitz  # PyMuPDF
 import xml.etree.ElementTree as ET
-import datetime
 
-def find_nearby_words(pdf_path, target_x, target_y, tolerance=10):
+def find_nearby_words(pdf_path, target_x, target_y, tolerance):
     """
     Encontra e retorna as palavras próximas às coordenadas especificadas (target_x, target_y)
     dentro de uma área de tolerância, concatenando-as em uma única string.
@@ -133,8 +132,12 @@ if __name__ == "__main__":
     pdf_path = "models/PDF_TISS.pdf"  # Caminho do PDF
     
     # Exemplo de uso da função de coordenadas com tolerância
-    nearby_words = find_nearby_words(pdf_path, target_x=100, target_y=50, tolerance=0)
-    print(f"Palavras próximas encontradas: {nearby_words}")
+    nearby_words1 = find_nearby_words(pdf_path, target_x=100, target_y=50, tolerance=0)
+    nearby_words2 = find_nearby_words(pdf_path, target_x=200, target_y=50, tolerance=0)
+    nearby_words3 = find_nearby_words(pdf_path, target_x=300, target_y=50, tolerance=0)
+    print(f"Palavras próximas encontradas: {nearby_words1}")
+    print(f"Palavras próximas encontradas: {nearby_words2}")
+    print(f"Palavras próximas encontradas: {nearby_words3}")
 
     # Construindo o XML com a estrutura definida
     xml_data = structure_text_to_tiss()
