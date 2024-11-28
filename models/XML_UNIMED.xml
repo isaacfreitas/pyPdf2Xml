@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<ans:mensagemTISS xmlns="http://www.ans.gov.br/padroes/tiss/schemas" xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas" xmlns:ns2="http://www.w3.org/2000/09/xmldsig#">
+<ans:mensagemTISS xmlns="http://www.ans.gov.br/padroes/tiss/schemas" 
+xmlns:ans="http://www.ans.gov.br/padroes/tiss/schemas" 
+xmlns:ns2="http://www.w3.org/2000/09/xmldsig#">
     <ans:cabecalho>
         <ans:identificacaoTransacao>
             <ans:tipoTransacao>DEMONSTRATIVO_ANALISE_CONTA</ans:tipoTransacao>

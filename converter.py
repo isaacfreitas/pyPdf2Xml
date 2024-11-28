@@ -1,6 +1,7 @@
 import fitz  # PyMuPDF
 import xml.etree.ElementTree as ET
 
+
 def find_nearby_words(pdf_path, target_x, target_y, tolerance):
     """
     Encontra e retorna as palavras próximas às coordenadas especificadas (target_x, target_y)
@@ -18,11 +19,49 @@ def find_nearby_words(pdf_path, target_x, target_y, tolerance):
             words = page.get_text("words")  # Extrai cada palavra com coordenadas
             for word in words:
                 x0, y0, x1, y1, text = word[:5]
-                if (x0 - tolerance <= target_x <= x1 + tolerance and 
+                if (x0 - tolerance<= target_x <= x1 + tolerance and 
                     y0 <= target_y <= y1 ):
                     print(f"Texto encontrado na página {page_num}:\n{text}\n")
                     words_found.append(text)
     return " ".join(words_found) if words_found else "Texto não encontrado"
+
+def find_horizontal_lines(pdf_path, tolerance=2):
+    """
+    Identifica linhas horizontais consecutivas em cada página do PDF.
+    
+    :param pdf_path: Caminho do arquivo PDF.
+    :param tolerance: Tolerância para considerar linhas consecutivas (em pixels).
+    :return: Lista de coordenadas das linhas horizontais consecutivas para cada página.
+    """
+    line_pairs = []  # Lista para armazenar pares de linhas consecutivas
+
+    with fitz.open(pdf_path) as pdf:
+        for page_num, page in enumerate(pdf, start=1):
+            # Obtém todos os objetos gráficos da página
+            shapes = page.get_drawings()
+
+            # Filtra apenas as linhas horizontais
+            horizontal_lines = []
+            for shape in shapes:
+                for item in shape["items"]:
+                    if item[0] == "l":  # O objeto é uma linha
+                        x0, y0, x1, y1 = item[1:5]
+                        if abs(y0 - y1) <= tolerance:  # Verifica se é horizontal
+                            horizontal_lines.append((x0, y0, x1, y1))
+
+            # Ordena as linhas por suas coordenadas verticais
+            horizontal_lines.sort(key=lambda line: line[1])
+
+            # Verifica pares consecutivos de linhas horizontais
+            for i in range(len(horizontal_lines) - 1):
+                _, y0, _, _ = horizontal_lines[i]
+                _, y1, _, _ = horizontal_lines[i + 1]
+
+                # Se a diferença vertical entre duas linhas consecutivas for menor que a tolerância, é um par
+                if abs(y1 - y0) <= tolerance:
+                    line_pairs.append((page_num, horizontal_lines[i], horizontal_lines[i + 1]))
+
+    return line_pairs
 
 # Função para construir o XML no padrão TISS com dados manuais para inicializar
 def structure_text_to_tiss():
